@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 02</title>
+</head>
+
+<body>
+
+<form id="postForm">
+    <p>Title:</p>
+    <input type="text" id="title"></input>
+
+    <p>Body:</p>
+    <input type="text" id="body"></input>
+
+    <button type="submit">Обновить</button>
+
+
+    <p id="result"></p>
+</form>
+
+    <script>
+
+    let titleInput = document.querySelector("#title");
+    let bodyInput = document.querySelector("#body");
+    let form = document.querySelector("#postForm");
+    let result = document.querySelector("#result");
+    
+    let url = "https://jsonplaceholder.typicode.com/posts/1";
+    
+    fetch(url).then(response => {
+        if (!response.ok) 
+        {
+            alert("не получили от севрера сигнал");
+        } 
+        else 
+        {
+            alert("все работает");
+        }
+    }).catch(error => console.log(error.message));
+
+    fetch(url)
+    .then(response => response.json())
+    .then(post => {
+      titleInput.value = post.title;
+      bodyInput.value = post.body;
+    });
+    
+
+    form.addEventListener("submit", function(e){
+        e.preventDefault();
+
+    let updatedPost = {
+        id: 1,
+        userId: 1,
+        title: titleInput.value,
+        body: bodyInput.value
+    };
+    fetch(url, {
+        method: 'PUT',
+        body: JSON.stringify(updatedPost),
+        headers: {'Content-type': 'application/json; charset=UTF-8'},
+    })
+    .then(response => response.json())
+    .then(json => { 
+        result.innerHTML = "Title: " + json.title + "<br>Body: " + json.body;
+    })
+    
+    .catch(error => console.log(error.message));
+})
+
+    
+
+        /*
+        Задание:
+        Напишите сценарий, который будет обновлять сущность post со свойствами
+        id: 1,
+        title: 'foo',
+        body: 'bar',
+        userId: 1,
+
+        Создайте форму с полем ввода для значения свойства title и полем ввода для значения свойства body
+
+        Значения для свойств title и body получите от пользователя
+        Значения id и userId должны остаться равными 1 и выводить их в форме не нужно.
+        При загрузке сценария заполните форму данными получеными при обработке GET запроса на https://jsonplaceholder.typicode.com/posts/1
+
+        адрес для отправки запроса
+        https://jsonplaceholder.typicode.com/posts/1
+
+        для обновления сущности воспользуйтесь PUT запросом https://jsonplaceholder.typicode.com/posts/1. Обработайте ответ
+        и выведите информацию о ошибке или об успешно завершенной операции.
+        */
+    </script>
+</body>
+
+</html>
