@@ -15,10 +15,67 @@
         .incomplete {
             color: red;
         }
+    th, td {
+      border: 1px solid #444;
+      padding: 10px 15px;
+      text-align: center;
+    }
+    #b
+    {
+        text-align: left;
+    }
+    #c
+    {
+        font-size: 13.5px;
+    }
     </style>
 </head>
 
 <body>
+    <table>
+      <tr>
+        <td>ID</td>
+        <td>Title</td>
+         <td>Completed</td>
+      </tr>
+      <tr>
+        <td id="a"></td>
+        <td id="b"></td>
+         <td id="c"></td>
+      </tr>
+  </table>
+
+  <script>
+
+    let first = document.querySelector("#a");
+    let second = document.querySelector("#b");
+    let third = document.querySelector("#c");
+
+    let url = "https://jsonplaceholder.typicode.com/todos";
+    fetch(url)
+    .then(response => response.json())
+    .then(json => main_function(json));
+
+    function main_function(list)
+    {
+        list.forEach(element => {
+                first.innerHTML += `${element.id}` + "</br>";
+                second.innerHTML += `${element.title}` + "</br>";
+                // third.innerHTML += `${element.completed}` + "</br>";
+                if(`${element.completed}` == "true")
+                {
+                    third.innerHTML += `❌` + "</br>";
+                }
+                if(`${element.completed}` == "false")
+                {
+                    third.innerHTML += `✅` + "</br>";
+                }
+            });
+    }
+  </script>
+</body>
+
+<!-- <body>
     <button id="loadButton">Загрузить список задач</button> <span id="loader" style="display: none;">Загрузка...</span>
     <div id="todoList">
     </div>
@@ -61,6 +118,6 @@
             });
         }
     </script>
-</body>
+</body> -->
 
 </html>
